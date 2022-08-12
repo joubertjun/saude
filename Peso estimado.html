@@ -1,0 +1,157 @@
+<!DOCTYPE html> 
+<html> 
+    
+<head> 
+    <title>Cálculo do Peso Estimado</title> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style type="text/css" rel="stylesheet">
+		fieldset {
+			margin-top: 10px;
+		}
+		legend {
+			font-size:	18px;
+			color: green;
+			width: auto;
+			margin-bottom: 0;
+		}
+		h2 {
+			text-align:center;
+			color:green;
+			
+		}
+	</style>
+</head> 
+    
+<body> 
+    <div class="container"> 
+      <h2>Avaliação Nutricional</h2> 
+        <form> 
+            <div class="form-group"> 
+				<fieldset>
+					<legend>Idade</legend>
+					<input id="idade" type="number" min="0" max="150" class="form-control" type="text"> 
+			    </fieldset>
+				
+				<fieldset>
+					<legend>Altura do Joelho (cm)</legend>
+                    <input id="alturaJoelho" type="number" min="0" max="150" class="form-control" type="text"> 
+				</fieldset>
+				
+				<fieldset>
+					<legend>Circunferência do Braço (cm)</legend>
+                    <input id="circunferenciaBraco" type="number" min="0" max="150" class="form-control" type="text"> 
+				</fieldset>
+				
+				<fieldset>				
+					<legend>Sexo</legend>
+					<input id="sexoHomem" type="radio" name="sexo" value="H"/> Homem<br />
+					<input id="sexoMulher" type="radio" name="sexo" value="M"/> Mulher<br />
+				</fieldset >
+				
+				<fieldset>				
+					<legend>Raça</legend>
+					<input id="etniaBranca" type="radio" name="etnia" value="B"/> Branca<br />
+					<input id="etniaNegra" type="radio" name="etnia" value="N"/> Negra<br />
+				</fieldset > 
+            <div class="form-group"> 
+                <button id="btn-alert" class="btn btn-success btn-lg float-right" type="button"> 
+                     Calcular  
+                </button> 
+            </div> 
+        </form> 
+    </div> 
+    <script>
+		var idade = null;
+		var alturaJoelho = null;
+		var circunferenciaBraco = null;
+		var sexo = null;
+		var etnia = null;
+
+        document.getElementById("btn-alert").addEventListener("click", function(){	
+			recuperaValoresInformados();
+			if (!idade || !alturaJoelho || !circunferenciaBraco || !sexo || !etnia) {
+				alert("Favor preencher todos os campos.");
+			} else {
+				alert(calculaPesoEAlturaEstimados());
+			}
+		});
+		
+		function recuperaValoresInformados() {
+			idade = parseFloat(document.getElementById("idade").value);
+			alturaJoelho = parseFloat(document.getElementById("alturaJoelho").value);
+			circunferenciaBraco = parseFloat(document.getElementById("circunferenciaBraco").value);
+			sexo = document.getElementById("sexoHomem").checked ? 'H' : (document.getElementById("sexoMulher").checked ? 'M' : null);
+			etnia = document.getElementById("etniaBranca").checked ? 'B' : (document.getElementById("etniaNegra").checked ? 'N' : null);
+		}
+		
+		function calculaPesoEAlturaEstimados(){
+		
+			var pesoEstimado = null;
+			var alturaEstimada = null
+			
+			/* Homem, negro, adulto */
+			if (sexo == 'H' && etnia == 'N' && isAdulto()) {
+				pesoEstimado = (alturaJoelho) * 1.09 + (circunferenciaBraco * 3.14) - 83.72;
+				alturaEstimada = 73.42 + (1.79 * alturaJoelho);
+			}
+
+			/* Homem, branco, adulto */
+			if (sexo == 'H' && etnia == 'B' && isAdulto()) {
+				pesoEstimado = (alturaJoelho) * 1.19 + (circunferenciaBraco * 3.21) - 86.82;
+				alturaEstimada = 71.85 + (1.88 * alturaJoelho);
+			}
+
+			/* Homem, negro, idoso */
+			if (sexo == 'H' && etnia == 'N' && isIdoso()) {
+				pesoEstimado =  (alturaJoelho) * 0.44 + (circunferenciaBraco * 2.86) - 39.21;
+				alturaEstimada = 95.79 + (1.37 * alturaJoelho);
+			}
+
+			/* Homem, branco, idoso*/
+			if (sexo == 'H' && etnia == 'B' && isIdoso()) {
+				pesoEstimado =  (alturaJoelho) * 1.1 + (circunferenciaBraco * 3.07) - 75.81;
+				alturaEstimada = 59.01 + (2.08 * alturaJoelho);
+			}
+
+			/* Mulher, negro, adulto */
+			if (sexo == 'M' && etnia == 'N' && isAdulto()) {
+				pesoEstimado =  (alturaJoelho) * 1.24 + (circunferenciaBraco * 2.97) - 82.48;
+				alturaEstimada = 68.1 + (1.86 * alturaJoelho) - (0.06 * idade);
+			}
+
+			/* Mulher, branco, adulto */
+			if (sexo == 'M' && etnia == 'B' && isAdulto()) {
+				pesoEstimado =  (alturaJoelho) * 1.01 + (circunferenciaBraco * 2.81) - 66.04;
+				alturaEstimada = 70.25 + (1.87 * alturaJoelho) - (0.06 * idade);
+			}
+
+			/* Mulher, negro, idoso */
+			if (sexo == 'M' && etnia == 'N' && isIdoso()) {
+				pesoEstimado =  (alturaJoelho) * 1.5 + (circunferenciaBraco * 2.58) - 84.22;
+				alturaEstimada = 58.72 + (1.96 * alturaJoelho);
+			}
+		
+			/* Mulher, branco, idoso*/
+			if (sexo == 'M' && etnia == 'B' && isIdoso()) {
+				pesoEstimado =  (alturaJoelho) * 1.09 + (circunferenciaBraco * 2.68) - 65.51;
+				alturaEstimada = 75 + (1.91 * alturaJoelho) - (0.17 * idade);
+			}
+			
+			return "Peso estimado: " + pesoEstimado.toFixed(2) + "\n" + "Altura estimada: " + alturaEstimada.toFixed(2);
+		
+		}
+		
+		function isAdulto(){
+			return parseFloat(idade) <= 59;			
+		}
+		
+		function isIdoso(){
+			return parseFloat(idade) > 59;			
+		}
+		
+    </script>
+</body> 
+   
+</html> 
