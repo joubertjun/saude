@@ -139,7 +139,11 @@
 				alturaEstimada = 75 + (1.91 * alturaJoelho) - (0.17 * idade);
 			}
 			
-			return "Peso estimado: " + pesoEstimado.toFixed(2) + "\n" + "Altura estimada: " + alturaEstimada.toFixed(2);
+			var imc = pesoEstimado / (alturaEstimada / 100) / (alturaEstimada / 100);
+
+			return "Peso estimado: " + pesoEstimado.toFixed(2) 
+				+ "\n" + "Altura estimada: " + alturaEstimada.toFixed(2)
+				+ "\n" + "IMC: " + imc.toFixed(2) + " kg/m²";
 		
 		}
 		
