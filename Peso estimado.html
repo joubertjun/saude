@@ -157,7 +157,7 @@
 				+ "\n" + "Peso ideal máximo: " + pesoIdealMaximo.toFixed(2) + " kg"
 				+ "\n" + "Peso ideal CTI: " + pesoIdealCTI.toFixed(2) + " kg"
 				+ "\n"
-				+ "\n" + "Cálculo adequação CB: " + calculoAdequacaoCB();
+				+ "\n" + "Adequação CB: " + calculoAdequacaoCB();
 		
 		}
 		
@@ -209,7 +209,7 @@
 					var percentual = (circunferenciaBraco / ( sexo == 'H' ? adequacaoCB[i].cbp50homem : adequacaoCB[i].cbp50mulher) * 100).toFixed(2);
 					for(let i = 0; i < classificacao.length; i = i + 1 ) {
 						if (percentual >= classificacao[i].percentualInicial &&  percentual < classificacao[i].percentualFinal) {
-							return percentual + " % (" + classificacao[i].descricao + ")";
+							return percentual + "% (" + classificacao[i].descricao + ")";
 						}
 					}
 				}
