@@ -89,7 +89,7 @@
 		function calculaPesoEAlturaEstimados(){
 		
 			var pesoEstimado = null;
-			var alturaEstimada = null
+			var alturaEstimada = null;
 			
 			/* Homem, negro, adulto */
 			if (sexo == 'H' && etnia == 'N' && isAdulto()) {
@@ -138,12 +138,25 @@
 				pesoEstimado =  (alturaJoelho) * 1.09 + (circunferenciaBraco * 2.68) - 65.51;
 				alturaEstimada = 75 + (1.91 * alturaJoelho) - (0.17 * idade);
 			}
-			
-			var imc = pesoEstimado / (alturaEstimada / 100) / (alturaEstimada / 100);
 
-			return "Peso estimado: " + pesoEstimado.toFixed(2) 
-				+ "\n" + "Altura estimada: " + alturaEstimada.toFixed(2)
-				+ "\n" + "IMC: " + imc.toFixed(2) + " kg/m²";
+			var alturaEstimadaEmMetros = (alturaEstimada / 100);			
+
+			var imc = pesoEstimado / alturaEstimadaEmMetros / alturaEstimadaEmMetros;
+
+			var pesoIdealMinimo = alturaEstimadaEmMetros * alturaEstimadaEmMetros * (isIdoso() ? 23 : 18.5);
+			var pesoIdealMedio =  alturaEstimadaEmMetros * alturaEstimadaEmMetros * (isIdoso() ? 25.5 : 21.7);			
+			var pesoIdealMaximo = alturaEstimadaEmMetros * alturaEstimadaEmMetros * (isIdoso() ? 28 : 24.9);
+			var pesoIdealCTI = alturaEstimadaEmMetros * alturaEstimadaEmMetros * 21.7;
+
+
+			return "Peso estimado: " + pesoEstimado.toFixed(2) + " kg"
+				+ "\n" + "Altura estimada: " + alturaEstimada.toFixed(2) + " cm"
+				+ "\n" + "IMC: " + imc.toFixed(2) + " kg/m²"
+				+ "\n"
+				+ "\n" + "Peso ideal mínimo: " + pesoIdealMinimo.toFixed(2) + " kg"
+				+ "\n" + "Peso ideal médio: " + pesoIdealMedio.toFixed(2) + " kg"
+				+ "\n" + "Peso ideal máximo: " + pesoIdealMaximo.toFixed(2) + " kg"
+				+ "\n" + "Peso ideal CTI: " + pesoIdealCTI.toFixed(2) + " kg";
 		
 		}
 		
