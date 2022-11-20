@@ -157,7 +157,7 @@
 				+ "\n" + "Peso ideal máximo: " + pesoIdealMaximo.toFixed(2) + " kg"
 				+ "\n" + "Peso ideal CTI: " + pesoIdealCTI.toFixed(2) + " kg"
 				+ "\n"
-				+ "\n" + "Cálculo adequação CB: " + calculoAdequacaoCB() + " %";
+				+ "\n" + "Cálculo adequação CB: " + calculoAdequacaoCB();
 		
 		}
 		
@@ -193,11 +193,25 @@
 				{ idadeInicial: 70, idadeFinal: 79.9, cbp50homem: 31.3, cbp50mulher: 30.1 },
 				{ idadeInicial: 80, idadeFinal: 200, cbp50homem: 29.5, cbp50mulher: 28.4 }
 			];
+			
+			 var classificacao = [
+				{ percentualInicial: 0, percentualFinal: 70, descricao: "Desnutrição grave" }, 
+				{ percentualInicial: 70, percentualFinal: 80, descricao: "Desnutrição moderada" }, 
+				{ percentualInicial: 80, percentualFinal: 90, descricao: "Desnutrição leve" }, 
+				{ percentualInicial: 90, percentualFinal: 110, descricao: "Eutrofia" }, 
+				{ percentualInicial: 110, percentualFinal: 120, descricao: "Sobrepeso" }, 
+				{ percentualInicial: 120, percentualFinal: 1000, descricao: "Obesidade" } 
+			 ]
 
 
 			for(let i = 0; i < adequacaoCB.length; i = i + 1 ) {
 				if (idade >= adequacaoCB[i].idadeInicial &&  idade <= adequacaoCB[i].idadeFinal) {
-					return (circunferenciaBraco / ( sexo == 'H' ? adequacaoCB[i].cbp50homem : adequacaoCB[i].cbp50mulher) * 100).toFixed(2);
+					var percentual = (circunferenciaBraco / ( sexo == 'H' ? adequacaoCB[i].cbp50homem : adequacaoCB[i].cbp50mulher) * 100).toFixed(2);
+					for(let i = 0; i < classificacao.length; i = i + 1 ) {
+						if (percentual >= classificacao[i].percentualInicial &&  percentual < classificacao[i].percentualFinal) {
+							return percentual + " % (" + classificacao[i].descricao + ")";
+						}
+					}
 				}
 			}
 		
